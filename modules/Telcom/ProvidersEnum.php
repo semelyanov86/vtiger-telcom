@@ -1,7 +1,8 @@
 <?php
+
 namespace Telcom;
 
-class ProvidersEnum {
-   
+class ProvidersEnum
+{
     const TELCOM = 'telcom';
 }

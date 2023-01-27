@@ -8,7 +8,7 @@
         <hr>
         
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop15px">
-            {assign var=DEFAULT_PROVIDER value=Settings_SPVoipIntegration_Record_Model::getDefaultProvider()}
+            {assign var=DEFAULT_PROVIDER value=Settings_Telcom_Record_Model::getDefaultProvider()}
             <form id="voipEditFrom" class="form-horizontal" data-detail-url="{$MODULE_MODEL->getDetailViewUrl()}">
                 <input type="hidden" name="module" value="Telcom"/>
                 <input type="hidden" name="action" value="SaveAjax"/>
