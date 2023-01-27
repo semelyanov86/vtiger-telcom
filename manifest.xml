@@ -1,0 +1,40 @@
+<module>
+    <name>Telcom</name>
+    <label>Telcom</label>
+    <type>extension</type>
+    <version>1.0.0</version>
+    <license>
+        <file>License.txt</file>
+    </license>
+    <parent></parent>
+    <dependencies>
+        <vtiger_version>7.0.0</vtiger_version>
+        <vtiger_max_version>7.*</vtiger_max_version>
+    </dependencies>
+    <tables>
+        <table>
+            <name>vtiger_telcom_provider</name>
+            <sql><![CDATA[create table vtiger_telcom_provider (
+	default_provider varchar(255)
+)]]></sql>
+        </table>
+        <table>
+            <name>vtiger_sp_voipintegration_settings</name>
+            <sql><![CDATA[create table vtiger_telcom_settings (
+	id int(19),
+	provider_name varchar(255),
+	field_name varchar(255) unique,
+        field_label varchar(255),
+        field_value varchar(255)
+)]]></sql>
+        </table>
+        <table>
+           <name>vtiger_telcom_options</name>
+           <sql><![CDATA[create table vtiger_telcom_options(
+        `name` varchar(255) NOT NULL,
+        `value` varchar(255) DEFAULT NULL,
+        UNIQUE(`name`)
+)]]></sql>
+        </table>
+    </tables>    
+</module>

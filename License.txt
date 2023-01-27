@@ -1,0 +1,5 @@
+* Licensee shall not permit anyone other than Authorized Users to use the Licensed Materials.
+* Licensee shall not modify or create a derivative work of or from the Licensed Materials without the prior written permission of Licensor.
+* Licensee shall not remove, obscure or modify any copyright or other notices included in the Licensed Materials.
+* Licensee will not make copies of the Licensed Materials or allow copies of the Software to be made by others, unless authorized by this License Agreement, except that Licensee may make copies of the Licensed Materials for backup purposes only.
+* Licensor grants Licensee and its Authorized Users a limited, non-exclusive, non-transferable license to use the Licensed Materials in the ordinary course of Licensees business operations.  Authorized Users shall include Licensees employees.
