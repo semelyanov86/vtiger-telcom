@@ -8,7 +8,9 @@ use Telcom\telcom\notifications\TelcomHistoryNotification;
 use Telcom\apiManagers\TelcomApiManager;
 
 class TelcomManagerFactory extends AbstractCallManagerFactory {
-    
+    /**
+     * @return TelcomApiManager
+     */
     public function getCallApiManager() {
         return new TelcomApiManager();
     }
@@ -31,4 +33,8 @@ class TelcomManagerFactory extends AbstractCallManagerFactory {
         }
     }
 
+    public function syncUser(\Users_Record_Model $recordModel)
+    {
+        // TODO: Implement syncUser() method.
+    }
 }

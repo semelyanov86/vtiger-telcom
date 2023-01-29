@@ -208,6 +208,19 @@ class Telcom extends CRMEntity
             $fieldInstance->typeofdata = 'V~O';
             $userInfoBlock->addField($fieldInstance);
         }
+        if (!Vtiger_Field_Model::getInstance('telcom_password', $usersModuleModel)) {
+            $userInfoBlock = Vtiger_Block_Model::getInstance('LBL_MORE_INFORMATION', $usersModuleModel);
+
+            $fieldInstance = new Vtiger_Field();
+            $fieldInstance->name = 'telcom_password';
+            $fieldInstance->table = 'vtiger_users';
+            $fieldInstance->label = 'Telcom Password';
+            $fieldInstance->column = 'telcom_password';
+            $fieldInstance->columntype = 'VARCHAR(255)';
+            $fieldInstance->uitype = 1;
+            $fieldInstance->typeofdata = 'V~O';
+            $userInfoBlock->addField($fieldInstance);
+        }
     }
 
     private function addResources()

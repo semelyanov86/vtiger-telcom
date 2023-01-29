@@ -1,12 +1,17 @@
 <?php
 namespace Telcom\integration;
 
+use Telcom\apiManagers\TelcomApiManager;
 use Telcom\ProvidersEnum;
 use Telcom\telcom\TelcomFactory;
 
 abstract class AbstractCallManagerFactory {
 
     public abstract function getNotificationModel($requestData);
+
+    /**
+     * @return TelcomApiManager
+     */
     public abstract function getCallApiManager();
     
     /**
