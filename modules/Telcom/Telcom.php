@@ -78,12 +78,7 @@ class Telcom extends CRMEntity
         $db = PearDatabase::getInstance();
         $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (1, '".ProvidersEnum::TELCOM."', 'telcom_sip_username', 'Username', '')");
         $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (2, '".ProvidersEnum::TELCOM."', 'telcom_sip_password', 'Password', '')");
-        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (3, '".ProvidersEnum::TELCOM."', 'telcom_sip_authname', 'Authentication name', '')");
         $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (4, '".ProvidersEnum::TELCOM."', 'telcom_sip_realm', 'Realm', 'cloud.telcom.pro')");
-        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (5, '".ProvidersEnum::TELCOM."', 'telcom_sip_display_name', 'Display Name', 'TELCOM')");
-        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (6, '".ProvidersEnum::TELCOM."', 'telcom_sip_ws_address_domain', 'Web Socket Domain', 'cloud.telcom.pro')");
-        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (7, '".ProvidersEnum::TELCOM."', 'telcom_sip_ws_address_port', 'Web Socket Port Number', '5064')");
-        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (8, '".ProvidersEnum::TELCOM."', 'telcom_sip_staff_id', 'Staff', '')");
 
         $db->pquery("INSERT INTO ".Settings_Telcom_Record_Model::defaultProvideTable." values(?)",
             array(ProvidersEnum::TELCOM));

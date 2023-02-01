@@ -124,18 +124,6 @@ class Settings_Telcom_Record_Model extends Settings_Vtiger_Record_Model {
         return self::getVoipSettingsFieldValue('telcom_sip_realm');
     }
 
-    public static function getTelcomSipDisplayName() {
-        return self::getVoipSettingsFieldValue('telcom_sip_display_name');
-    }
-
-    public static function getTelcomSipWsAddressDomain() {
-        return self::getVoipSettingsFieldValue('telcom_sip_ws_address_domain');
-    }
-
-    public static function getTelcomSipWsAddressPort() {
-        return self::getVoipSettingsFieldValue('telcom_sip_ws_address_port');
-    }
-
     public static function getTelcomSipStaffId() {
         return self::getVoipSettingsFieldValue('telcom_sip_staff_id');
     }
@@ -145,9 +133,6 @@ class Settings_Telcom_Record_Model extends Settings_Vtiger_Record_Model {
         $outgoingNumber = null;
         if ($currentUser) {
             $outgoingNumber = $currentUser->get('telcom_outgoing_number');
-        }
-        if (empty($outgoingNumber)) {
-            $outgoingNumber = self::getYandexDefaultOutgoing();
         }
         return $outgoingNumber;
     }

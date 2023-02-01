@@ -25,6 +25,11 @@ When you install and integrate the Telcom module, you can:
 - Increased Productivity. Boost team productivity exponentially and streamline communication by using Vtiger phone calls integration. A unified platform makes it convenient to store customer details, track call records and increases visibility across the organization.
 - Enhanced Control and Coordination. Telcom integration gives you a bird’s eye view of your team members call schedules so that you can plan your day better. You do not need to switch applications and can manage all customer calls on a single device. This leads to higher control, better responsiveness, and team coordination.
 
+## Setup instruction
+To setup integration with telcom provider, you neet to go to vtiger crm settings, choose "Telcom" menu page. After clicking on this menu, you can see Telcom settings page. By clicking on "Edit" button, you can open edit settings page.
+After installing Telcom module, two fields will be added in user profile page: Telcom ID and Telcom Password. You can create user directly in Telcom Admin Panel. After filling out this two fields, you need to press Sync button.
+To receive information from Telcom about new calls, you need to set following callback: `modules/Telcom/controllers/CallsController.php`
+
 
 ## Installation
 
