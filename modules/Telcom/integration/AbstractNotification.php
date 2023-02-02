@@ -1,5 +1,4 @@
 <?php
-namespace Telcom\integration;
 
 abstract class AbstractNotification extends \Vtiger_Base_Model {
     

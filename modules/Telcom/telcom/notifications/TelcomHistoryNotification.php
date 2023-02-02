@@ -1,5 +1,4 @@
 <?php
-namespace Telcom\telcom\notifications;
 
 class TelcomHistoryNotification extends AbstractTelcomNotification {
     const INBOUND_TYPE = 'in';

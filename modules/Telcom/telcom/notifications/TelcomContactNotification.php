@@ -1,7 +1,6 @@
 <?php
-namespace Telcom\telcom\notifications;
 
-use Telcom\ProvidersErrors;
+require_once 'modules/Telcom/ProvidersErrors.php';
 
 class TelcomContactNotification extends AbstractTelcomNotification {
     public function validateNotification() {

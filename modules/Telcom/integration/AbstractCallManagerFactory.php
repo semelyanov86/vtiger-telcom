@@ -1,10 +1,8 @@
 <?php
-namespace Telcom\integration;
 
-use Telcom\apiManagers\TelcomApiManager;
-use Telcom\ProvidersEnum;
-use Telcom\telcom\TelcomFactory;
-use Telcom\telcom\TelcomManagerFactory;
+require_once 'modules/Telcom/apiManagers/TelcomApiManager.php';
+require_once 'modules/Telcom/ProvidersEnum.php';
+require_once 'modules/Telcom/telcom/TelcomManagerFactory.php';
 
 abstract class AbstractCallManagerFactory {
 

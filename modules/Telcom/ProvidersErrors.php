@@ -1,7 +1,5 @@
 <?php
 
-namespace Telcom;
-
 class ProvidersErrors
 {
     const VALIDATE_REQUEST_ERROR = 1;

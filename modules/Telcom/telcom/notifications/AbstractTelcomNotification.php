@@ -1,9 +1,9 @@
 <?php
-namespace Telcom\telcom\notifications;
 
-use Telcom\integration\AbstractNotification;
-use Telcom\ProvidersErrors;
-use Telcom\ProvidersEnum;
+require_once 'modules/Telcom/integration/AbstractNotification.php';
+require_once 'modules/Telcom/ProvidersErrors.php';
+require_once 'modules/Telcom/ProvidersEnum.php';
+
 
 abstract class AbstractTelcomNotification extends AbstractNotification {
     

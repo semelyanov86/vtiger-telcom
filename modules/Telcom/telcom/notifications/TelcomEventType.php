@@ -1,7 +1,4 @@
 <?php
-
-namespace Telcom\telcom\notifications;
-
 class TelcomEventType {
     
     const INCOMING = 'INCOMING';

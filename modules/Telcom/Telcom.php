@@ -2,9 +2,6 @@
 
 include_once('vtlib/Vtiger/Module.php');
 include_once 'modules/Telcom/ProvidersEnum.php';
-
-use Telcom\ProvidersEnum;
-
 class Telcom extends CRMEntity
 {
     function Telcom()

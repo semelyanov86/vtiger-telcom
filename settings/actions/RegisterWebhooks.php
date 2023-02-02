@@ -1,7 +1,6 @@
 <?php
-include_once 'modules/Telcom/vendor/autoload.php';
 
-use Telcom\integration\AbstractCallManagerFactory;
+require_once 'modules/Telcom/integration/AbstractCallManagerFactory.php';
 
 class Settings_Telcom_RegisterWebhooks_Action extends Vtiger_SaveAjax_Action {
 
@@ -11,7 +10,6 @@ class Settings_Telcom_RegisterWebhooks_Action extends Vtiger_SaveAjax_Action {
             $provider = $request->get('provider');
             $factory = AbstractCallManagerFactory::getEventsFacory($provider);
             $apiManager = $factory->getCallApiManager();
-            $apiManager->registerWebhooks();
             $response->setResult(true);
         } catch (Exception $ex) {
             $response->setError($ex->getMessage());

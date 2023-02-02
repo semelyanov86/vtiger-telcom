@@ -1,6 +1,5 @@
 <?php
 
-
 class Settings_Telcom_SaveAjax_Action extends Vtiger_SaveAjax_Action {
     
     function checkPermission(\Vtiger_Request $request) {

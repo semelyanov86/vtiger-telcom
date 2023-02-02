@@ -1,7 +1,5 @@
 <?php
 
-namespace Telcom\loggers;
-
 class Logger {
     
     private static $logFile = 'logs/telcom_integration.log';

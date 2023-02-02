@@ -1,7 +1,6 @@
 <?php
 include_once 'modules/Telcom/vendor/autoload.php';
-
-use Telcom\integration\AbstractCallManagerFactory;
+require_once 'modules/Telcom/integration/AbstractCallManagerFactory.php';
 
 class Telcom_IntegrationActions_Action extends Vtiger_Action_Controller {    
     

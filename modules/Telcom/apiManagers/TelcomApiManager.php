@@ -1,7 +1,5 @@
 <?php
 
-namespace Telcom\apiManagers;
-
 class TelcomApiManager
 {
 

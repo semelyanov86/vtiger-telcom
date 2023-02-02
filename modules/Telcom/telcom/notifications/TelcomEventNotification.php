@@ -1,7 +1,5 @@
 <?php
 
-namespace Telcom\telcom\notifications;
-
 class TelcomEventNotification extends AbstractTelcomNotification {        
     private $dataMapping = array(
         'user' => 'user', 

@@ -1,11 +1,10 @@
 <?php
-namespace Telcom\telcom;
 
-use Telcom\integration\AbstractCallManagerFactory;
-use Telcom\telcom\notifications\TelcomContactNotification;
-use Telcom\telcom\notifications\TelcomEventNotification;
-use Telcom\telcom\notifications\TelcomHistoryNotification;
-use Telcom\apiManagers\TelcomApiManager;
+require_once 'modules/Telcom/integration/AbstractCallManagerFactory.php';
+require_once 'modules/Telcom/apiManagers/TelcomApiManager.php';
+require_once 'modules/Telcom/telcom/notifications/TelcomContactNotification.php';
+require_once 'modules/Telcom/telcom/notifications/TelcomEventNotification.php';
+require_once 'modules/Telcom/telcom/notifications/TelcomHistoryNotification.php';
 
 class TelcomManagerFactory extends AbstractCallManagerFactory {
     /**

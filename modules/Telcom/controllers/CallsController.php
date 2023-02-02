@@ -1,7 +1,5 @@
 <?php
 
-namespace Telcom;
-
 register_shutdown_function(function() {
     $error = error_get_last();
     error_log(print_r($error, true));
@@ -20,17 +18,23 @@ include_once 'includes/main/WebUI.php';
 include_once 'libraries/htmlpurifier/library/HTMLPurifier.auto.php';
 vimport('includes.http.Request');
 include_once 'modules/Telcom/vendor/autoload.php';
+require_once 'modules/Telcom/ProvidersEnum.php';
+require_once 'modules/Telcom/integration/AbstractCallManagerFactory.php';
+require_once 'modules/Telcom/loggers/Logger.php';
+
+if (file_exists('vendor/autoload.php')) {
+    include_once 'vendor/autoload.php';
+}
 
 global $current_user;
-
-use Telcom\ProvidersEnum;
-use Telcom\integration\AbstractCallManagerFactory;
-use Telcom\loggers\Logger;
 
 class CallsController {
 
     public function process(\Vtiger_Request $request) {
         try {
+            if (function_exists('ray')) {
+                ray($request, $request->getAll());
+            }
             $voipManagerName = $this->parseRequest($request);
             $factory = AbstractCallManagerFactory::getEventsFacory($voipManagerName);
             $notificationModel = $factory->getNotificationModel($request->getAll());
