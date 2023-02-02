@@ -70,13 +70,61 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
         
         return null;
     }
+
+    /**
+     * @return string
+     */
+    protected function getId()
+    {
+        return $this->get('id');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPhoneNumber()
+    {
+        return $this->get('phoneNumber');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEmail()
+    {
+        return $this->get('email');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getName()
+    {
+        return $this->get('name');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSipLogin()
+    {
+        return $this->get('sipLogin');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSipPassword()
+    {
+        return $this->get('sipPassword');
+    }
     
     protected function getUserPhoneNumber() {
         return $this->get('ext');
     }
     
     protected function getTelcomUserId() {
-        return $this->get('user');
+        return $this->get('sipLogin');
     }
     
     protected function getCustomerPhoneNumber() {

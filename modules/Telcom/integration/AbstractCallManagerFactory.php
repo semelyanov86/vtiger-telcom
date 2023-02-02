@@ -6,7 +6,7 @@ require_once 'modules/Telcom/telcom/TelcomManagerFactory.php';
 
 abstract class AbstractCallManagerFactory {
 
-    public abstract function getNotificationModel($requestData);
+    public abstract function getNotificationModel(array $requestData);
 
     /**
      * @return TelcomApiManager

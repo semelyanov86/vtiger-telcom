@@ -1,6 +1,6 @@
 <?php
 
-class Logger {
+class TelcomLogger {
     
     private static $logFile = 'logs/telcom_integration.log';
     

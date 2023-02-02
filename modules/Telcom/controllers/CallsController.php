@@ -4,24 +4,18 @@ register_shutdown_function(function() {
     $error = error_get_last();
     error_log(print_r($error, true));
 });
-if (isset($_GET['zd_echo']))
-    exit($_GET['zd_echo']);
+
 $headers = getallheaders();
-if (isset($headers['Echo'])) {
-    header("Echo: {$headers['Echo']}");
-    exit();
-}
-chdir(dirname(__FILE__) . '/../../../');
+
+chdir(__DIR__. '/../../../');
 include_once 'include/Webservices/Relation.php';
 include_once 'vtlib/Vtiger/Module.php';
 include_once 'includes/main/WebUI.php';
 include_once 'libraries/htmlpurifier/library/HTMLPurifier.auto.php';
 vimport('includes.http.Request');
-include_once 'modules/Telcom/vendor/autoload.php';
 require_once 'modules/Telcom/ProvidersEnum.php';
 require_once 'modules/Telcom/integration/AbstractCallManagerFactory.php';
-require_once 'modules/Telcom/loggers/Logger.php';
-
+require_once 'modules/Telcom/loggers/TelcomLogger.php';
 if (file_exists('vendor/autoload.php')) {
     include_once 'vendor/autoload.php';
 }
@@ -30,7 +24,7 @@ global $current_user;
 
 class CallsController {
 
-    public function process(\Vtiger_Request $request) {
+    public function process(Vtiger_Request $request) {
         try {
             if (function_exists('ray')) {
                 ray($request, $request->getAll());
@@ -39,9 +33,22 @@ class CallsController {
             $factory = AbstractCallManagerFactory::getEventsFacory($voipManagerName);
             $notificationModel = $factory->getNotificationModel($request->getAll());
             $notificationModel->validateNotification();
+            http_response_code(202);
             $notificationModel->process();
+        } catch (DomainException $exception) {
+            TelcomLogger::log('Domain Exception', $exception);
+            http_response_code(422);
+            echo json_encode([
+                'success' => false,
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage()
+                ]
+            ], JSON_THROW_ON_ERROR);
         } catch (\Exception $ex) {
-            Logger::log('Error on process notification', $ex);
+            http_response_code(500);
+            ray($ex);
+            TelcomLogger::log('Error on process notification', $ex);
         }
     }
 
@@ -51,7 +58,10 @@ class CallsController {
 
 }
 
-$current_user = \Users::getActiveAdminUser();
-
+$current_user = Users::getActiveAdminUser();
 $callController = new CallsController();
-$callController->process(new \Vtiger_Request($_REQUEST));
+$request = new Vtiger_Request($_REQUEST);
+$request->set('data', json_decode(file_get_contents('php://input'), true));
+$request->setGlobal('method', $_SERVER['REQUEST_METHOD']);
+
+$callController->process($request);

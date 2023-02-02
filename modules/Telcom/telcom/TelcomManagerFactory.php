@@ -2,7 +2,7 @@
 
 require_once 'modules/Telcom/integration/AbstractCallManagerFactory.php';
 require_once 'modules/Telcom/apiManagers/TelcomApiManager.php';
-require_once 'modules/Telcom/telcom/notifications/TelcomContactNotification.php';
+require_once 'modules/Telcom/telcom/notifications/TelcomUserNotification.php';
 require_once 'modules/Telcom/telcom/notifications/TelcomEventNotification.php';
 require_once 'modules/Telcom/telcom/notifications/TelcomHistoryNotification.php';
 
@@ -14,7 +14,18 @@ class TelcomManagerFactory extends AbstractCallManagerFactory {
         return new TelcomApiManager();
     }
 
-    public function getNotificationModel($request) {
+    /**
+     * @param  array{data: array, method: string}  $request
+     * @return AbstractTelcomNotification
+     * @throws Exception
+     */
+    public function getNotificationModel(array $request) {
+        if ($request['method'] == 'POST' && isset($request['data']['email'])) {
+            throw new DomainException('Unsupported incoming data');
+        } elseif ($request['method'] == 'PUT' && isset($request['data']['email'])) {
+            return new TelcomUserNotification($request['data']);
+        }
+        throw new DomainException('Unsupported incoming data');
         $notificationType = $request['cmd'];
         switch($notificationType) {
             
@@ -25,15 +36,15 @@ class TelcomManagerFactory extends AbstractCallManagerFactory {
                 return new TelcomEventNotification($request);
             
             case 'contact':
-                return new TelcomContactNotification($request);
+                return new TelcomUserNotification($request);
                 
             default:
                 throw new \Exception('Unknow type');
         }
     }
 
-    public function syncUser(\Users_Record_Model $recordModel)
+    public function syncUser(Users_Record_Model $recordModel)
     {
-        // TODO: Implement syncUser() method.
+        $this->getCallApiManager()->syncUser($recordModel);
     }
 }
