@@ -6,7 +6,11 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         'callstatus' => 'callstatus',
         'sourceuuid' => 'sourceuuid',
     );
-    
+
+    public function process() {
+        $voipModel = $this->getVoipRecordModelFromNotificationModel();
+        $voipModel->save();
+    }
 
     protected function getNotificationDataMapping() {
         return $this->dataMapping;
@@ -133,5 +137,10 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         }
         
         return $startTime;
+    }
+
+    public function validateNotification()
+    {
+        // TODO: Implement validateNotification() method.
     }
 }

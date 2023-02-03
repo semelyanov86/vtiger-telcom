@@ -88,5 +88,15 @@ class TelcomHistoryNotification extends AbstractTelcomNotification {
     
     private function generateSoundFileName() {
         return "storage/{$this->getSourceUUId()}.mp3";
-    }   
+    }
+
+    public function process() {
+        $voipModel = $this->getVoipRecordModelFromNotificationModel();
+        $voipModel->save();
+    }
+
+    public function validateNotification()
+    {
+        // TODO: Implement validateNotification() method.
+    }
 }

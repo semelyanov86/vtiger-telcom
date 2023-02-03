@@ -47,7 +47,6 @@ class CallsController {
             ], JSON_THROW_ON_ERROR);
         } catch (\Exception $ex) {
             http_response_code(500);
-            ray($ex);
             TelcomLogger::log('Error on process notification', $ex);
         }
     }
@@ -62,6 +61,9 @@ $current_user = Users::getActiveAdminUser();
 $callController = new CallsController();
 $request = new Vtiger_Request($_REQUEST);
 $request->set('data', json_decode(file_get_contents('php://input'), true));
+if (!$request->get('data')) {
+    $request->set('data', []);
+}
 $request->setGlobal('method', $_SERVER['REQUEST_METHOD']);
 
 $callController->process($request);

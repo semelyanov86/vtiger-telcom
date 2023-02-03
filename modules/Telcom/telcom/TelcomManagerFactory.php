@@ -5,6 +5,7 @@ require_once 'modules/Telcom/apiManagers/TelcomApiManager.php';
 require_once 'modules/Telcom/telcom/notifications/TelcomUserNotification.php';
 require_once 'modules/Telcom/telcom/notifications/TelcomEventNotification.php';
 require_once 'modules/Telcom/telcom/notifications/TelcomHistoryNotification.php';
+require_once 'modules/Telcom/telcom/notifications/TelcomFirstLaunchNotification.php';
 
 class TelcomManagerFactory extends AbstractCallManagerFactory {
     /**
@@ -24,6 +25,8 @@ class TelcomManagerFactory extends AbstractCallManagerFactory {
             throw new DomainException('Unsupported incoming data');
         } elseif ($request['method'] == 'PUT' && isset($request['data']['email'])) {
             return new TelcomUserNotification($request['data']);
+        } elseif ($request['method'] == 'GET') {
+            return new TelcomFirstLaunchNotification($request['data']);
         }
         throw new DomainException('Unsupported incoming data');
         $notificationType = $request['cmd'];

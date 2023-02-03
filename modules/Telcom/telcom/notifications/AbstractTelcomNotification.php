@@ -9,46 +9,9 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     
     const SOURCE_ID_PREFIX = "telcom_";
     
-    public function process() {
-        $voipModel = $this->getVoipRecordModelFromNotificationModel();
-        $voipModel->save();
-    }
+    abstract public function process();
     
-    public function validateNotification() {
-        $requestToken = $this->getRequestToken();
-        if(empty($requestToken)) {
-            throw new \Exception(ProvidersErrors::VALIDATE_REQUEST_ERROR);
-        }
-        
-        $crmToken = $this->getCrmSavedToken();
-        if(empty($crmToken)) {
-            throw new \Exception(ProvidersErrors::VALIDATE_REQUEST_ERROR);
-        }
-        
-        if($requestToken != $crmToken) {
-            throw new \Exception(ProvidersErrors::VALIDATE_REQUEST_ERROR);
-        }
-        
-        $callId = $this->get('callid');
-        if(empty($callId)) {
-            throw new \Exception("Invalid data", ProvidersErrors::WRONG_PROVIDER_DATA);
-        }
-        
-        $phone = $this->getCustomerPhoneNumber('phone');
-        if(empty($phone)) {
-            throw new \Exception("Invalid data", ProvidersErrors::WRONG_PROVIDER_DATA);
-        }
-        
-        $gravitelUserId = $this->getTelcomUserId();
-        if(empty($gravitelUserId)) {
-            throw new \Exception("Invalid data", ProvidersErrors::WRONG_PROVIDER_DATA);
-        }
-        
-        $userModel = $this->getAssignedUser();
-        if (empty($userModel)) {
-            throw new \Exception("Unknown user", ProvidersErrors::WRONG_PROVIDER_DATA);
-        }
-    }
+    abstract public function validateNotification();
     
     protected function getType() {
         return $this->get('type');
@@ -56,12 +19,12 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     
     /**
      * 
-     * @return Users_Record_Model
+     * @return ?Users_Record_Model
      */
     protected function getAssignedUser() {
         $db = \PearDatabase::getInstance();
-        $result = $db->pquery("SELECT id FROM vtiger_users WHERE sp_domru_id=?", array(
-            $this->getGravitelUserId()
+        $result = $db->pquery("SELECT id FROM vtiger_users WHERE telcom_id=?", array(
+            $this->getSipLogin()
         ));
         
         if($result && $resultRow = $db->fetchByAssoc($result)) {
