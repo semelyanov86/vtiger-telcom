@@ -27,23 +27,14 @@ class TelcomManagerFactory extends AbstractCallManagerFactory {
             return new TelcomUserNotification($request['data']);
         } elseif ($request['method'] == 'GET') {
             return new TelcomFirstLaunchNotification($request['data']);
+        } elseif ($request['method'] == 'POST' && isset($request['data']['protocolConfID'])) {
+            $request['data']['is_completed'] = false;
+            return new TelcomEventNotification($request['data']);
+        } elseif ($request['method'] == 'PUT' && isset($request['data']['protocolConfID'])) {
+            $request['data']['is_completed'] = true;
+            return new TelcomEventNotification($request['data']);
         }
         throw new DomainException('Unsupported incoming data');
-        $notificationType = $request['cmd'];
-        switch($notificationType) {
-            
-            case 'history':
-                return new TelcomHistoryNotification($request);
-            
-            case 'event':
-                return new TelcomEventNotification($request);
-            
-            case 'contact':
-                return new TelcomUserNotification($request);
-                
-            default:
-                throw new \Exception('Unknow type');
-        }
     }
 
     public function syncUser(Users_Record_Model $recordModel)

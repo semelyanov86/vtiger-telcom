@@ -68,7 +68,7 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
         foreach ($dataMapping as $voipFieldName => $notificationFieldName) {
             $recordModel->set($voipFieldName, $this->get($notificationFieldName));
         }
-
+        $recordModel->set('customernumber', $this->getCustomerPhoneNumber());
         $customerModel = $this->getCustomerByPhone();
         if ($customerModel != null) {
             $recordModel->set('customer', $customerModel->getId());

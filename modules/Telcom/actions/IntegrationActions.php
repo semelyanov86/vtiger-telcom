@@ -58,7 +58,7 @@ class Telcom_IntegrationActions_Action extends Vtiger_Action_Controller {
         } else {
             try {
                 $factory = AbstractCallManagerFactory::getDefaultFactory();
-                $factory->getCallApiManager()->syncUser($userModel);
+                $factory->syncUser($userModel);
                 $response->setResult(array('success' => true, 'message' => vtranslate('LBL_USER_SYNCED', 'Telcom')));
             } catch (Exception $ex) {
                 $response->setError($ex->getMessage());

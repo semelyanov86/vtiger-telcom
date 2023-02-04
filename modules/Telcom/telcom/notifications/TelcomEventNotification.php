@@ -5,9 +5,17 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         'user' => 'user', 
         'callstatus' => 'callstatus',
         'sourceuuid' => 'sourceuuid',
+        'telcom_call_status_code' => 'status',
+        'telcom_called_from_number' => 'source',
+        'telcom_called_to_number' => 'destination',
+        'telcom_recordingurl' => 'callRecord',
+        'telcom_voip_provider' => 'provider',
+        'totalduration' => 'durationSeconds',
+        'billduration' => 'billduration',
     );
 
     public function process() {
+        http_response_code(201);
         $voipModel = $this->getVoipRecordModelFromNotificationModel();
         $voipModel->save();
     }
@@ -18,6 +26,7 @@ class TelcomEventNotification extends AbstractTelcomNotification {
 
     protected function prepareNotificationModel() {
         $this->set('sourceuuid', $this->getSourceUUId());
+        $this->set('provider', $this->getProviderName());
         
         $userModel = $this->getAssignedUser();
         if($userModel != null) {
@@ -34,6 +43,7 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         if($status != null) {
             $this->set('callstatus', $status);            
         }
+
         $type = $this->getType();
         if ($type === TelcomEventType::INCOMING || $type === TelcomEventType::OUTGOING) {
             $this->dataMapping['customernumber'] = 'phone';
@@ -63,8 +73,8 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         return null;
     }
     
-    private function getDirection() {
-        $type = $this->getType();
+    public function getDirection() {
+        $type = parent::getDirection();
         if($type === TelcomEventType::INCOMING) {
             return 'inbound';
         }
@@ -81,10 +91,8 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         $type = $this->getType();
         if($type === TelcomEventType::INCOMING || $type === TelcomEventType::OUTGOING) {
             $this->dataMapping['starttime'] = 'starttime';
-            $this->dataMapping['sp_voip_provider'] = 'sp_voip_provider';
             
             $this->set('starttime', date("Y-m-d H:i:s"));
-            $this->set('sp_voip_provider', $this->getProviderName());
         }
         
         if($type === TelcomEventType::ACCEPTED) {
@@ -141,6 +149,25 @@ class TelcomEventNotification extends AbstractTelcomNotification {
 
     public function validateNotification()
     {
-        // TODO: Implement validateNotification() method.
+        $protocolId = $this->getProtocolId();
+        if(empty($protocolId)) {
+            throw new DomainException(ProvidersErrors::VALIDATE_REQUEST_ERROR);
+        }
+
+        $userId = $this->get('user');
+        if (empty($userId)) {
+            throw new DomainException(ProvidersErrors::VALIDATE_REQUEST_ERROR);
+        }
+
+        $destination = $this->getDestination();
+        if (empty($destination)) {
+            throw new DomainException(ProvidersErrors::VALIDATE_REQUEST_ERROR);
+        }
+
+        $direction = $this->getDirection();
+        if (empty($direction)) {
+            throw new DomainException(ProvidersErrors::VALIDATE_REQUEST_ERROR);
+        }
+        return true;
     }
 }

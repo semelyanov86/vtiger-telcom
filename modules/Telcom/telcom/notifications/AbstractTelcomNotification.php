@@ -14,7 +14,7 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     abstract public function validateNotification();
     
     protected function getType() {
-        return $this->get('type');
+        return $this->getDirection();
     }
     
     /**
@@ -22,16 +22,9 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
      * @return ?Users_Record_Model
      */
     protected function getAssignedUser() {
-        $db = \PearDatabase::getInstance();
-        $result = $db->pquery("SELECT id FROM vtiger_users WHERE telcom_id=?", array(
-            $this->getSipLogin()
-        ));
-        
-        if($result && $resultRow = $db->fetchByAssoc($result)) {
-            return \Vtiger_Record_Model::getInstanceById($resultRow['id'], 'Users');
-        }
-        
-        return null;
+        $userId = $this->get('user');
+
+        return Vtiger_Record_Model::getInstanceById($userId, 'Users');
     }
 
     /**
@@ -83,7 +76,10 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     }
     
     protected function getUserPhoneNumber() {
-        return $this->get('ext');
+        if ($this->getDirection() == TelcomEventType::OUTGOING) {
+            return $this->getSource();
+        }
+        return $this->getDestination();
     }
     
     protected function getTelcomUserId() {
@@ -91,19 +87,41 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     }
     
     protected function getCustomerPhoneNumber() {
-        return $this->get('phone');
-    }
-    
-    protected function getRequestToken() {
-        return $this->get('crm_token');
+        if ($this->getDirection() == TelcomEventType::OUTGOING) {
+            return $this->getDestination();
+        }
+        return $this->getSource();
     }
     
     public function getStaffId() {
         return \Settings_Telcom_Record_Model::getTelcomSipStaffId();
     }
-    
+
+    /**
+     * @return string
+     */
     public function getSourceUUId() {
-        return 'telcom_' . $this->get('callid') . '_' . $this->get('user');
+        return 'telcom_' . $this->get('protocolConfID') . '_' . $this->get('user');
+    }
+
+    public function getProtocolId()
+    {
+        return $this->get('protocolConfID');
+    }
+
+    public function getSource()
+    {
+        return $this->get('source');
+    }
+
+    public function getDestination()
+    {
+        return $this->get('destination');
+    }
+
+    public function getDirection()
+    {
+        return $this->get('direction');
     }
     
     protected function getProviderName() {
