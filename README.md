@@ -43,7 +43,7 @@ If you have any feedback, please reach out to us at se@sergeyem.ru
 
 ## Support
 
-For support, email se@sergeyem.ru or join our Slack channel.
+For support, email se@sergeyem.ru or write me via telegram: @sergeyem.
 
 
 
