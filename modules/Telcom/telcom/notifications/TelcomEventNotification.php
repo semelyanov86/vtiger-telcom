@@ -1,6 +1,10 @@
 <?php
 
-class TelcomEventNotification extends AbstractTelcomNotification {        
+class TelcomEventNotification extends AbstractTelcomNotification {
+    public const OUTGOING_TYPE = 'outbound';
+
+    public const INCOMING_TYPE = 'inbound';
+
     private $dataMapping = array(
         'user' => 'user', 
         'callstatus' => 'callstatus',
@@ -20,6 +24,9 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         $voipModel->save();
     }
 
+    /**
+     * @return string[]
+     */
     protected function getNotificationDataMapping() {
         return $this->dataMapping;
     }
@@ -45,92 +52,81 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         }
 
         $type = $this->getType();
-        if ($type === TelcomEventType::INCOMING || $type === TelcomEventType::OUTGOING) {
+        if ($type === self::INCOMING_TYPE || $type === self::OUTGOING_TYPE) {
             $this->dataMapping['customernumber'] = 'phone';
         }
         
         $this->processDates();
     }
-    
+
+    /**
+     * @return string
+     */
     private function getStatus() {
-        $type = $this->getType();
-        if($type === TelcomEventType::INCOMING || $type === TelcomEventType::OUTGOING) {
+        if (!$this->get('is_completed')) {
             return 'ringing';
         }
-        
-        if($type === TelcomEventType::ACCEPTED) {
-            return 'in-progress';
+        if ($this->get('status') != 200) {
+            return 'no-response';
         }
-        
-        if($type === TelcomEventType::COMPLETED) {
+        if ($this->checkIfCompleted()) {
             return 'completed';
         }
-        
-        if($type === TelcomEventType::CANCELLED) {
-            return 'no-answer';
-        }
-        
-        return null;
+        return 'no-answer';
     }
-    
+
+    /**
+     * @return bool
+     */
+    private function checkIfCompleted()
+    {
+        return $this->get('durationSeconds') && $this->get('durationSeconds') > 0;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getDirection() {
         $type = parent::getDirection();
         if($type === TelcomEventType::INCOMING) {
-            return 'inbound';
+            return self::INCOMING_TYPE;
         }
         
         if($type === TelcomEventType::OUTGOING) {
-            return 'outbound';
+            return self::OUTGOING_TYPE;
         }
         
         return null;
     }
-    
-    
+
+    /**
+     * @return void
+     */
     private function processDates() {
         $type = $this->getType();
-        if($type === TelcomEventType::INCOMING || $type === TelcomEventType::OUTGOING) {
+        $this->dataMapping['totalduration'] = 'durationSeconds';
+        $this->set('totalduration', $this->get('durationSeconds'));
+        if($type === self::INCOMING_TYPE || $type === self::OUTGOING_TYPE) {
             $this->dataMapping['starttime'] = 'starttime';
             
             $this->set('starttime', date("Y-m-d H:i:s"));
         }
-        
-        if($type === TelcomEventType::ACCEPTED) {
-            $currentTime = time();
-            $startTime = $this->getStartTime();
-            if($startTime && ($currentTime - $startTime) > 0) {
-                $this->dataMapping['totalduration'] = 'totalduration';
-                $this->set('totalduration', $currentTime - $startTime);
-            }
-        }
-        
-        if($type === TelcomEventType::COMPLETED || $type === TelcomEventType::CANCELLED) {
+
+        if($this->checkIfCompleted()) {
             $currentTime = time();
             
             $this->dataMapping['endtime'] = 'endtime';
             $this->set('endtime', date('Y-m-d H:i:s', $currentTime));
-            
-            $startTime = $this->getStartTime();
-            $oldTotalDuration = $this->getTotalDuration();                        
-            if($startTime && ($currentTime - $startTime) > 0) {
-                $newTotalDuration = $currentTime - $startTime;
-                $this->dataMapping['totalduration'] = 'totalduration';
-                $this->set('totalduration', $newTotalDuration);
-                if ($oldTotalDuration !== null && $type === TelcomEventType::COMPLETED) {
-                    $billDuration = $newTotalDuration - $oldTotalDuration;
-                    if ($billDuration > 0) {                    
-                        $this->dataMapping['billduration'] = 'billduration';
-                        $this->set('billduration', $billDuration);
-                    }
-                }
-            }
+
+            $this->dataMapping['billduration'] = 'billduration';
+            $this->set('billduration', $this->get('durationSeconds'));
         }
     }
-    
+
     private function getTotalDuration() {
         $totalDuration = null;
         if($this->pbxManagerModel != null) {
-            $totalDuration = $this->pbxManagerModel->get('totalduration');            
+            $totalDuration = $this->pbxManagerModel->get('totalduration');
         }
         return $totalDuration;
     }

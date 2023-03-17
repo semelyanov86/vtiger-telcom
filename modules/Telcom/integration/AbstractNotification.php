@@ -21,7 +21,11 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
             $this->pbxManagerModel = \Vtiger_Record_Model::getInstanceById($pbxManagerId);
         }
     }
-    
+
+    /**
+     * @param $number string
+     * @return Users_Record_Model|null
+     */
     public static function getUserByNumber($number) {
         $db = \PearDatabase::getInstance();
 
@@ -53,7 +57,10 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
         }
         return $customerModel;
     }
-    
+
+    /**
+     * @return PBXManager_Record_Model
+     */
     protected function getVoipRecordModelFromNotificationModel() {
         $this->prepareNotificationModel();
         $dataMapping = $this->getNotificationDataMapping();
@@ -78,6 +85,10 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
         return $recordModel;
     }
 
+    /**
+     * @param $customerPhone string
+     * @return Vtiger_Record_Model|null
+     */
     private function getAccountByPhone($customerPhone) {
         $db = \PearDatabase::getInstance();
         $accountModel = null;
@@ -94,6 +105,10 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
         return $accountModel;
     }
 
+    /**
+     * @param $customerPhone string
+     * @return Vtiger_Record_Model|null
+     */
     private function getContactByPhone($customerPhone) {
         $db = \PearDatabase::getInstance();
         $contactModel = null;
@@ -116,6 +131,10 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
         return $contactModel;
     }
 
+    /**
+     * @param $customerPhone string
+     * @return Vtiger_Record_Model|null
+     */
     private function getLeadByPhone($customerPhone) {
         $db = \PearDatabase::getInstance();
         $leadModel = null;

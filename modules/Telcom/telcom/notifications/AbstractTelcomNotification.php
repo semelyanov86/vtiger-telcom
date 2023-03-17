@@ -12,7 +12,10 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     abstract public function process();
     
     abstract public function validateNotification();
-    
+
+    /**
+     * @return string|null
+     */
     protected function getType() {
         return $this->getDirection();
     }
