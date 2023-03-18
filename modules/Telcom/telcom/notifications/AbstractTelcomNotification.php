@@ -88,9 +88,12 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     protected function getTelcomUserId() {
         return $this->get('sipLogin');
     }
-    
+
+    /**
+     * @return string
+     */
     protected function getCustomerPhoneNumber() {
-        if ($this->getDirection() == TelcomEventType::OUTGOING) {
+        if ($this->getDirection() == TelcomEventType::OUTGOING_TYPE) {
             return $this->getDestination();
         }
         return $this->getSource();
@@ -122,6 +125,9 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
         return $this->get('destination');
     }
 
+    /**
+     * @return string
+     */
     public function getDirection()
     {
         return $this->get('direction');

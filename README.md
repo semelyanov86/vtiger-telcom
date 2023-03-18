@@ -30,6 +30,23 @@ To setup integration with telcom provider, you neet to go to vtiger crm settings
 After installing Telcom module, two fields will be added in user profile page: Telcom ID and Telcom Password. You can create user directly in Telcom Admin Panel. After filling out this two fields, you need to press Sync button.
 To receive information from Telcom about new calls, you need to set following callback: `modules/Telcom/controllers/CallsController.php`
 
+To setup integration of Telcom provider with Vtiger CRM, do following steps:
+* Go to user settings page, in additional information block enter your login in "Telcom ID" firld and your password in "Telcom Password" field
+* In CRM settings, go to "Telcom", to open module settings page and enter username and password data. Also you can change Telcom realm address.
+
+As a result of all settings you will be able to receive incoming calls in SalesPlatform CRM system and make outgoing calls by pressing on the client's phone number. If you want, you can record the conversation between the employee and the customer, as well as view the history of calls.
+
+Note, that in modules/Telcom/controllers folder there are .htaccess file, which manages redirect policy for webhook
+```bash
+DirectorySlash Off
+RewriteEngine on
+RewriteCond %{REQUEST_METHOD} ^(POST|PUT)$
+RewriteRule ^call(.*)$ CallsController.php$1 [L]
+RewriteRule ^user(.*)$ CallsController.php$1 [L]
+```
+
+If you are using nginx, make sure to setup on your server redirects from call, user and client endpoints to CallsController
+
 
 ## Installation
 

@@ -1,9 +1,7 @@
 <?php
+require_once 'modules/Telcom/telcom/notifications/TelcomEventType.php';
 
 class TelcomEventNotification extends AbstractTelcomNotification {
-    public const OUTGOING_TYPE = 'outbound';
-
-    public const INCOMING_TYPE = 'inbound';
 
     private $dataMapping = array(
         'user' => 'user', 
@@ -52,7 +50,7 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         }
 
         $type = $this->getType();
-        if ($type === self::INCOMING_TYPE || $type === self::OUTGOING_TYPE) {
+        if ($type === TelcomEventType::INCOMING_TYPE || $type === TelcomEventType::OUTGOING_TYPE) {
             $this->dataMapping['customernumber'] = 'phone';
         }
         
@@ -89,11 +87,11 @@ class TelcomEventNotification extends AbstractTelcomNotification {
     public function getDirection() {
         $type = parent::getDirection();
         if($type === TelcomEventType::INCOMING) {
-            return self::INCOMING_TYPE;
+            return TelcomEventType::INCOMING_TYPE;
         }
         
         if($type === TelcomEventType::OUTGOING) {
-            return self::OUTGOING_TYPE;
+            return TelcomEventType::OUTGOING_TYPE;
         }
         
         return null;
@@ -106,7 +104,7 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         $type = $this->getType();
         $this->dataMapping['totalduration'] = 'durationSeconds';
         $this->set('totalduration', $this->get('durationSeconds'));
-        if($type === self::INCOMING_TYPE || $type === self::OUTGOING_TYPE) {
+        if($type === TelcomEventType::INCOMING_TYPE || $type === TelcomEventType::OUTGOING_TYPE) {
             $this->dataMapping['starttime'] = 'starttime';
             
             $this->set('starttime', date("Y-m-d H:i:s"));
@@ -123,6 +121,9 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         }
     }
 
+    /**
+     * @return ?int
+     */
     private function getTotalDuration() {
         $totalDuration = null;
         if($this->pbxManagerModel != null) {

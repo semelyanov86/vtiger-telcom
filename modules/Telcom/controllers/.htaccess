@@ -1,0 +1,7 @@
+DirectorySlash Off
+RewriteEngine on
+RewriteCond %{REQUEST_METHOD} ^(POST|PUT)$
+RewriteRule ^call(.*)$ CallsController.php$1 [L]
+RewriteRule ^user(.*)$ CallsController.php$1 [L]
+RewriteRule ^client(.*)$ CallsController.php$1 [L]
+
