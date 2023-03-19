@@ -75,12 +75,20 @@ class Telcom extends CRMEntity
         $db = PearDatabase::getInstance();
         $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (1, '".ProvidersEnum::TELCOM."', 'telcom_sip_username', 'Username', '')");
         $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (2, '".ProvidersEnum::TELCOM."', 'telcom_sip_password', 'Password', '')");
-        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (4, '".ProvidersEnum::TELCOM."', 'telcom_sip_realm', 'Realm', 'cloud.telcom.pro')");
+        $db->query("INSERT INTO ".Settings_Telcom_Record_Model::settingsTable." VALUES (4, '".ProvidersEnum::TELCOM."', 'telcom_sip_realm', 'Realm', 'https://cloud.telcom.pro:8431')");
 
         $db->pquery("INSERT INTO ".Settings_Telcom_Record_Model::defaultProvideTable." values(?)",
             array(ProvidersEnum::TELCOM));
         $db->pquery("INSERT INTO ".Settings_Telcom_Record_Model::optionsTable." VALUES('use_click_to_call', '0')",
             array());
+
+        $db->pquery("INSERT INTO `vtiger_pbxmanager_gateway`(
+            `gateway`,
+            `parameters`
+        ) VALUES (
+            'Telcom',
+            ''
+         );", array());
     }
 
     private function createFields()
@@ -217,12 +225,12 @@ class Telcom extends CRMEntity
 
     private function addResources()
     {
-        Vtiger_Link::addLink(0, 'HEADERSCRIPT', 'Telcom', 'modules/Telcom/resources/Telcom.js');
+        Vtiger_Link::addLink(0, 'HEADERSCRIPT', 'Telcom', 'layouts/v7/modules/Telcom/resources/Telcom.js');
     }
 
     private function removeResources()
     {
-        Vtiger_Link::deleteLink(0, 'HEADERSCRIPT', 'Telcom', 'modules/Telcom/resources/Telcom.js');
+        Vtiger_Link::deleteLink(0, 'HEADERSCRIPT', 'Telcom', 'layouts/v7/modules/Telcom/resources/Telcom.js');
     }
 
 }
