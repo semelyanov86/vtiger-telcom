@@ -86,7 +86,7 @@ class Telcom extends CRMEntity
             `gateway`,
             `parameters`
         ) VALUES (
-            'Telcom',
+            'telcom',
             ''
          );", array());
     }

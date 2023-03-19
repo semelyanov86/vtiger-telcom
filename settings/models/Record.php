@@ -137,6 +137,9 @@ class Settings_Telcom_Record_Model extends Settings_Vtiger_Record_Model {
         return $outgoingNumber;
     }
 
+    /**
+     * @return string|null
+     */
     public static function getDefaultProvider() {
         $db = PearDatabase::getInstance();
         $defaultProvider = null;

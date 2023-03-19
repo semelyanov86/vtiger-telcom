@@ -14,6 +14,7 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         'telcom_voip_provider' => 'provider',
         'totalduration' => 'durationSeconds',
         'billduration' => 'billduration',
+        'recordingurl' => 'recordingurl',
     );
 
     public function process() {
@@ -53,6 +54,8 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         if ($type === TelcomEventType::INCOMING_TYPE || $type === TelcomEventType::OUTGOING_TYPE) {
             $this->dataMapping['customernumber'] = 'phone';
         }
+
+        $this->set('recordingurl', $this->generateRecordingLink());
         
         $this->processDates();
     }
@@ -86,11 +89,11 @@ class TelcomEventNotification extends AbstractTelcomNotification {
      */
     public function getDirection() {
         $type = parent::getDirection();
-        if($type === TelcomEventType::INCOMING) {
+        if($type === TelcomEventType::INCOMING || $type === TelcomEventType::INCOMING_TYPE) {
             return TelcomEventType::INCOMING_TYPE;
         }
         
-        if($type === TelcomEventType::OUTGOING) {
+        if($type === TelcomEventType::OUTGOING || $type === TelcomEventType::OUTGOING_TYPE) {
             return TelcomEventType::OUTGOING_TYPE;
         }
         
@@ -166,5 +169,22 @@ class TelcomEventNotification extends AbstractTelcomNotification {
             throw new DomainException(ProvidersErrors::VALIDATE_REQUEST_ERROR);
         }
         return true;
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateRecordingLink()
+    {
+        $record = $this->get('callRecord');
+        if (!$record) {
+            return '';
+        }
+        if (strpos($record, "http") === 0) {
+            return $record;
+        }
+
+        $startUrl = Settings_Telcom_Record_Model::getTelcomSipRealm();
+        return $startUrl . '/' . $record;
     }
 }

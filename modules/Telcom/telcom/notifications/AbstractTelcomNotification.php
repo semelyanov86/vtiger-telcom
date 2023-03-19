@@ -77,9 +77,12 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
     {
         return $this->get('sipPassword');
     }
-    
+
+    /**
+     * @return string
+     */
     protected function getUserPhoneNumber() {
-        if ($this->getDirection() == TelcomEventType::OUTGOING) {
+        if ($this->getDirection() == TelcomEventType::OUTGOING || $this->getDirection() == TelcomEventType::OUTGOING_TYPE) {
             return $this->getSource();
         }
         return $this->getDestination();
@@ -93,10 +96,25 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
      * @return string
      */
     protected function getCustomerPhoneNumber() {
-        if ($this->getDirection() == TelcomEventType::OUTGOING_TYPE) {
-            return $this->getDestination();
+        if ($this->getDirection() == TelcomEventType::OUTGOING_TYPE || $this->getDirection() == TelcomEventType::OUTGOING) {
+            return $this->getParsedNumber($this->getDestination());
         }
-        return $this->getSource();
+        return $this->getParsedNumber($this->getSource());
+    }
+
+    /**
+     * @param  string  $number
+     * @return string
+     */
+    protected function getParsedNumber($number)
+    {
+        if (!$number) {
+            return '';
+        }
+        $number = trim($number, '+');
+        $number = ltrim($number, '8');
+        $number = ltrim($number, '7');
+        return '7' . $number;
     }
     
     public function getStaffId() {
