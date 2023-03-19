@@ -45,7 +45,6 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
     public function getCustomerByPhone() {
         $customerModel = null;
         $customerPhone = $this->getCustomerPhoneNumber();
-        ray($customerPhone);
         if (!empty($customerPhone)) {
             
             $customerModel = $this->getAccountByPhone($customerPhone);
@@ -129,7 +128,6 @@ abstract class AbstractNotification extends \Vtiger_Base_Model {
                                             $customerPhone, $plusPhone, 
                                             $customerPhone, $plusPhone
                 ));
-        ray($result);
         if ($result && $resRow = $db->fetchByAssoc($result)) {
             $contactModel = \Vtiger_Record_Model::getInstanceById($resRow['contactid']);
         }
