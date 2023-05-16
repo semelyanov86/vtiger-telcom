@@ -27,10 +27,10 @@ class TelcomManagerFactory extends AbstractCallManagerFactory {
             return new TelcomUserNotification($request['data']);
         } elseif ($request['method'] == 'GET') {
             return new TelcomFirstLaunchNotification($request['data']);
-        } elseif ($request['method'] == 'POST' && isset($request['data']['protocolConfID'])) {
+        } elseif ($request['method'] == 'POST' && isset($request['data']['protocolConfId'])) {
             $request['data']['is_completed'] = false;
             return new TelcomEventNotification($request['data']);
-        } elseif ($request['method'] == 'PUT' && isset($request['data']['protocolConfID'])) {
+        } elseif ($request['method'] == 'PUT' && isset($request['data']['protocolConfId'])) {
             $request['data']['is_completed'] = true;
             return new TelcomEventNotification($request['data']);
         }

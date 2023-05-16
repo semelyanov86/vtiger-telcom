@@ -26,9 +26,7 @@ class CallsController {
 
     public function process(Vtiger_Request $request) {
         try {
-            if (function_exists('ray')) {
-                ray($request, $request->getAll());
-            }
+            debugData($request, $request->getAll());
             $voipManagerName = $this->parseRequest($request);
             $factory = AbstractCallManagerFactory::getEventsFacory($voipManagerName);
             $notificationModel = $factory->getNotificationModel($request->getAll());
@@ -45,9 +43,11 @@ class CallsController {
                     'message' => $exception->getMessage()
                 ]
             ], JSON_THROW_ON_ERROR);
+            debugData($exception);
         } catch (\Exception $ex) {
             http_response_code(500);
             TelcomLogger::log('Error on process notification', $ex);
+            debugData($ex);
         }
     }
 
@@ -67,3 +67,9 @@ if (!$request->get('data')) {
 $request->setGlobal('method', $_SERVER['REQUEST_METHOD']);
 
 $callController->process($request);
+
+function debugData(...$data) {
+    if (function_exists('ray')) {
+        ray(...$data);
+    }
+}

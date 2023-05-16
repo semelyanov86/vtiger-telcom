@@ -125,12 +125,12 @@ abstract class AbstractTelcomNotification extends AbstractNotification {
      * @return string
      */
     public function getSourceUUId() {
-        return 'telcom_' . $this->get('protocolConfID') . '_' . $this->get('user');
+        return 'telcom_' . $this->get('protocolConfId') . '_' . $this->get('user');
     }
 
     public function getProtocolId()
     {
-        return $this->get('protocolConfID');
+        return $this->get('protocolConfId');
     }
 
     public function getSource()
