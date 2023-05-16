@@ -40,7 +40,7 @@ class TelcomApiManager
         }
 
         $response = $this->sendRequest(
-            \Settings_Telcom_Record_Model::getTelcomSipRealm(),
+            \Settings_Telcom_Record_Model::getTelcomSipRealm() . '/user',
             $telcomUserId,
             \Settings_Telcom_Record_Model::getTelcomSipPassword(),
             array(
@@ -58,6 +58,9 @@ class TelcomApiManager
         }
 
         $decodedResponse = json_decode($response);
+        if (function_exists('ray')) {
+            ray($decodedResponse);
+        }
         if ($decodedResponse != null && !empty($decodedResponse->error)) {
             throw new \Exception('Invalid provider parameters');
         }
@@ -80,6 +83,10 @@ class TelcomApiManager
             ],
             CURLOPT_POSTFIELDS => json_encode($data)
         );
+
+        if (function_exists('ray')) {
+            ray($options);
+        }
 
         $ch = curl_init();
         curl_setopt_array($ch, $options);

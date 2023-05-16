@@ -221,6 +221,19 @@ class Telcom extends CRMEntity
             $fieldInstance->typeofdata = 'V~O';
             $userInfoBlock->addField($fieldInstance);
         }
+        if (!Vtiger_Field_Model::getInstance('telcom_user_id', $usersModuleModel)) {
+            $userInfoBlock = Vtiger_Block_Model::getInstance('LBL_MORE_INFORMATION', $usersModuleModel);
+
+            $fieldInstance = new Vtiger_Field();
+            $fieldInstance->name = 'telcom_user_id';
+            $fieldInstance->table = 'vtiger_users';
+            $fieldInstance->label = 'Telcom User ID';
+            $fieldInstance->column = 'telcom_user_id';
+            $fieldInstance->columntype = 'VARCHAR(255)';
+            $fieldInstance->uitype = 1;
+            $fieldInstance->typeofdata = 'V~O';
+            $userInfoBlock->addField($fieldInstance);
+        }
     }
 
     private function addResources()
