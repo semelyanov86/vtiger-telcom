@@ -56,7 +56,7 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         }
 
         $this->set('recordingurl', $this->generateRecordingLink());
-        
+
         $this->processDates();
     }
 
@@ -67,9 +67,9 @@ class TelcomEventNotification extends AbstractTelcomNotification {
         if (!$this->get('is_completed')) {
             return 'ringing';
         }
-        if ($this->get('status') != 200) {
+        /*if ($this->get('status') != 200) {
             return 'no-response';
-        }
+        }*/
         if ($this->checkIfCompleted()) {
             return 'completed';
         }

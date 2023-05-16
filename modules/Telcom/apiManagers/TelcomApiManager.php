@@ -1,8 +1,4 @@
 <?php
-if (file_exists('vendor/autoload.php')) {
-    include_once 'vendor/autoload.php';
-}
-
 
 class TelcomApiManager
 {
@@ -16,11 +12,15 @@ class TelcomApiManager
         }
 
         $response = $this->sendRequest(
-            \Settings_Telcom_Record_Model::getTelcomSipRealm(),
+            \Settings_Telcom_Record_Model::getTelcomSipRealm() . '/call',
             $telcomUserId,
             \Settings_Telcom_Record_Model::getTelcomSipPassword(),
             array('destination' => $number, 'user' => $currentUser->get('id'))
         );
+
+        if (function_exists('ray')) {
+            ray($response);
+        }
 
         if (empty($response)) {
             throw new \Exception('No communication with provider');
@@ -40,8 +40,8 @@ class TelcomApiManager
         }
 
         $response = $this->sendRequest(
-            \Settings_Telcom_Record_Model::getTelcomSipRealm() . '/user',
-            \Settings_Telcom_Record_Model::getTelcomSipUsername(),
+            \Settings_Telcom_Record_Model::getTelcomSipRealm(),
+            $telcomUserId,
             \Settings_Telcom_Record_Model::getTelcomSipPassword(),
             array(
                 'id' => $userModel->get('id'),
@@ -58,8 +58,8 @@ class TelcomApiManager
         }
 
         $decodedResponse = json_decode($response);
-        if ($decodedResponse != null && !empty($decodedResponse->code) && $decodedResponse->code != 200) {
-            throw new \Exception('Invalid provider parameters, got error ' . $decodedResponse->reason);
+        if ($decodedResponse != null && !empty($decodedResponse->error)) {
+            throw new \Exception('Invalid provider parameters');
         }
     }
 
