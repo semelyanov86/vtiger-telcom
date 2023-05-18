@@ -31,7 +31,7 @@ After installing Telcom module, two fields will be added in user profile page: T
 To receive information from Telcom about new calls, you need to set following callback: `modules/Telcom/controllers/CallsController.php`
 
 To setup integration of Telcom provider with Vtiger CRM, do following steps:
-* Go to user settings page, in additional information block enter your login in "Telcom ID" firld and your password in "Telcom Password" field
+* Go to user settings page, in additional information block enter your login in "Telcom ID" field and your password in "Telcom Password" field
 * In CRM settings, go to "Telcom", to open module settings page and enter username and password data. Also you can change Telcom realm address.
 
 As a result of all settings you will be able to receive incoming calls in SalesPlatform CRM system and make outgoing calls by pressing on the client's phone number. If you want, you can record the conversation between the employee and the customer, as well as view the history of calls.
